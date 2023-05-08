@@ -55,3 +55,36 @@ void initialize(int msize) {
         }
     }
 }
+vector<int> pos(int num) {
+    int i = 0, j = 0;
+    while (num - 1 > 0) {
+        j++;
+        if (j % msize == 0) {
+            i++;
+            j = 0;
+        }
+        num--;
+    }
+    vector<int> x; 
+    x[0] = i; 
+    x[1] = j;
+    return x;
+}
+
+int irandomized(int current) {
+    int i;
+    do {
+        srand(time(0));
+        i = rand() % msize;
+    } while (transitionMatrix[i][current] == 0);
+    return i;
+}
+
+int jrandomized(int current) {
+    int j;
+    do {
+        srand(time(0));
+        j = rand() % msize;
+    } while (transitionMatrix[current][j] == 0);
+    return j;
+}
