@@ -12,6 +12,7 @@ vector<vector<vector<int>>> probabilityMatrix;
 int hours;
 int msize;
 
+
 void initialize(int msize)
 {
     for (unsigned short i = 0; i < msize; i++)
@@ -157,6 +158,25 @@ void display()
         }
         cout << endl;
     }
+}
+
+void rprob(int hours){
+    for(int i = 0; i < msize; i++){
+        for(int j=0;j<msize;j++){
+            probabilityMatrix[i][j][0]=transitionMatrix[i][j];
+        }
+    }
+    if(hours>1){
+        for(int h=1;h<hours;h++){
+            for(int i=0;i<msize;i++){
+                for(int j=0;j<msize;j++){
+                    probabilityMatrix[i][j][h]=0;
+                    for(int k=0;k<9;k++){
+                        probabilityMatrix[i][j][h]+=probabilityMatrix[i][k][h-1]*transitionMatrix[k][j];
+                    }
+                }
+            }
+        }
 }
 
 int main()
