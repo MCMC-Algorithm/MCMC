@@ -10,7 +10,6 @@ vector<vector<int>> transitionMatrix(0);
 vector<vector<int>> transitionMatrix(0);
 vector<vector<vector<int>>> probabilityMatrix;
 int hours;
-int timeeach;
 int msize;
 
 void initialize(int msize) {
@@ -101,22 +100,6 @@ void randomizer(int &currenti,int &currentj) {
     cout << "i: " << currenti << " j: " << currentj << endl;
 }
 
-void hourcalc(int ){
-    vector<vector<int>> hrsmatrix;
-    vector <int> x = pos(initialState);
-    vector<vector<int>> vec;
-    for (unsigned int i = 0; i < hours; i++) {
-        randomizer(x[0], x[1]);
-        vec[x[0]][x[1]]++;
-
-    }
-
-    for (unsigned int i = 0; i < msize; i++) {
-        for (unsigned int j = 0; j < msize; j++) {
-
-        }
-    }
-}
 
 int main()
 {
