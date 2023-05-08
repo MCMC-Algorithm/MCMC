@@ -7,7 +7,7 @@ using namespace std;
 int initialState;
 int edgeProbability;
 vector<vector<int>> transitionMatrix(0);
-vector<vector<int>> transitionMatrix(0);
+vector<int> counter(0);
 vector<vector<vector<int>>> probabilityMatrix;
 int hours;
 int msize;
@@ -99,6 +99,23 @@ void randomizer(int &currenti,int &currentj) {
     }
     cout << "i: " << currenti << " j: " << currentj << endl;
 }
+
+int convert(int i, int j) {
+    return i * msize + j + 1;
+}   
+
+void randomwalk(int &currenti, int &currentj) {
+    int num = -1;
+    for(int i = 0; i < hours; i++) {
+        int num = convert(currenti, currentj);
+        cout<< "from state " << num << " to state ";
+        randomizer(currenti, currentj);
+        num = convert(currenti, currentj);
+        cout << num << endl;
+        counter[num]++;
+    }
+}
+
 
 
 int main()
