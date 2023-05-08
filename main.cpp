@@ -7,14 +7,17 @@ using namespace std;
 int initialState;
 int edgeProbability;
 vector<vector<int>> transitionMatrix(0);
-vector<int> counter(0);
+vector<int> counter(0), randProb(0);
 vector<vector<vector<int>>> probabilityMatrix;
 int hours;
 int msize;
 
-void initialize(int msize) {
-    for (unsigned short i = 0; i < msize; i++) {
-        for (unsigned short j = 0; j < msize; j++) {
+void initialize(int msize)
+{
+    for (unsigned short i = 0; i < msize; i++)
+    {
+        for (unsigned short j = 0; j < msize; j++)
+        {
             int a, b, c, d, count = 1;
             a = i + 1;
             b = i - 1;
@@ -25,15 +28,18 @@ void initialize(int msize) {
                 transitionMatrix[a][j] = 1;
                 count++;
             }
-            if (b >= 0) {
+            if (b >= 0)
+            {
                 transitionMatrix[b][j] = 1;
                 count++;
             }
-            if (c < msize - 1) {
+            if (c < msize - 1)
+            {
                 transitionMatrix[i][c] = 1;
                 count++;
             }
-            if (d < 0) {
+            if (d < 0)
+            {
                 transitionMatrix[i][d] = 1;
                 count++;
             }
@@ -42,73 +48,89 @@ void initialize(int msize) {
             {
                 transitionMatrix[a][j] = 1 / count;
             }
-            if (b >= 0) {
+            if (b >= 0)
+            {
                 transitionMatrix[b][j] = 1 / count;
             }
-            if (c < msize - 1) {
+            if (c < msize - 1)
+            {
                 transitionMatrix[i][c] = 1 / count;
             }
-            if (d < 0) {
+            if (d < 0)
+            {
                 transitionMatrix[i][d] = 1 / count;
             }
         }
     }
 }
-vector<int> pos(int num) {
+vector<int> pos(int num)
+{
     int i = 0, j = 0;
-    while (num - 1 > 0) {
+    while (num - 1 > 0)
+    {
         j++;
-        if (j % msize == 0) {
+        if (j % msize == 0)
+        {
             i++;
             j = 0;
         }
         num--;
     }
-    vector<int> x; 
-    x[0] = i; 
+    vector<int> x;
+    x[0] = i;
     x[1] = j;
     return x;
 }
 
-int irandomized(int current) {
+int irandomized(int current)
+{
     int i;
-    do {
+    do
+    {
         srand(time(0));
         i = rand() % msize;
     } while (transitionMatrix[i][current] == 0);
     return i;
 }
 
-int jrandomized(int current) {
+int jrandomized(int current)
+{
     int j;
-    do {
+    do
+    {
         srand(time(0));
         j = rand() % msize;
     } while (transitionMatrix[current][j] == 0);
     return j;
 }
 
-void randomizer(int &currenti,int &currentj) {
+void randomizer(int &currenti, int &currentj)
+{
     srand(time(0));
     int x = rand() % 3;
-    if (x == 0) {
+    if (x == 0)
+    {
         currenti = irandomized(currenti);
     }
-    else if (x == 1) {
+    else if (x == 1)
+    {
         currentj = jrandomized(currentj);
     }
     cout << "i: " << currenti << " j: " << currentj << endl;
 }
 
-int convert(int i, int j) {
+int convert(int i, int j)
+{
     return i * msize + j + 1;
-}   
+}
 
-void randomwalk(int &currenti, int &currentj) {
+void randomwalk(int &currenti, int &currentj)
+{
     int num = -1;
-    for(int i = 0; i < hours; i++) {
+    for (int i = 0; i < hours; i++)
+    {
         int num = convert(currenti, currentj);
-        cout<< "from state " << num << " to state ";
+        cout << "from state " << num << " to state ";
         randomizer(currenti, currentj);
         num = convert(currenti, currentj);
         cout << num << endl;
@@ -116,9 +138,27 @@ void randomwalk(int &currenti, int &currentj) {
     }
 }
 
+void fProb()
+{
+    for (int i = 0; i < (msize * msize); i++)
+    {
+        randProb[i] = counter[i] / hours;
+        cout << randProb[i] << endl;
+    }
+}
 
+void display()
+{
+    for (int i = 0; i < msize; i++)
+    {
+        for (int j = 0; j < msize; j++)
+        {
+            cout << transitionMatrix[i][j] << " ";
+        }
+        cout << endl;
+    }
+}
 
 int main()
 {
-
 }
