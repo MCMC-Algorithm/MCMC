@@ -88,3 +88,54 @@ int jrandomized(int current) {
     } while (transitionMatrix[current][j] == 0);
     return j;
 }
+int irandomized(int current) {
+    int i;
+    do {
+        srand(time(0));
+        i = rand() % msize;
+    } while (transitionMatrix[i][current] == 0);
+    return i;
+}
+
+int jrandomized(int current) {
+    int j;
+    do {
+        srand(time(0));
+        j = rand() % msize;
+    } while (transitionMatrix[current][j] == 0);
+    return j;
+}
+
+void randomizer(int &currenti,int &currentj) {
+    srand(time(0));
+    int x = rand() % 3;
+    if (x == 0) {
+        currenti = irandomized(currenti);
+    }
+    else if (x == 1) {
+        currentj = jrandomized(currentj);
+    }
+    cout << "i: " << currenti << " j: " << currentj << endl;
+}
+
+void hourcalc(int ){
+    vector<vector<int>> hrsmatrix;
+    vector <int> x = pos(initialState);
+    vector<vector<int>> vec;
+    for (unsigned int i = 0; i < hours; i++) {
+        randomizer(x[0], x[1]);
+        vec[x[0]][x[1]]++;
+
+    }
+
+    for (unsigned int i = 0; i < msize; i++) {
+        for (unsigned int j = 0; j < msize; j++) {
+
+        }
+    }
+}
+
+int main()
+{
+
+}
