@@ -181,4 +181,25 @@ void rprob(int hours){
 
 int main()
 {
+    cout << "Enter the size of the matrix: ";
+    cin >> msize;
+    cout << "Enter the initial state: ";
+    cin >> initialState;
+    cout << "Enter the probability of an edge: ";
+    cin >> edgeProbability;
+    cout << "Enter the number of hours: ";
+    cin >> hours;
+    transitionMatrix.resize(msize);
+    for (int i = 0; i < msize; i++)
+    {
+        transitionMatrix[i].resize(msize);
+    }
+    initialize(msize);
+    display();
+    int currenti = pos(initialState)[0];
+    int currentj = pos(initialState)[1];
+    randomwalk(currenti, currentj);
+    fProb();
+    rprob(hours);
+    return 0;
 }
