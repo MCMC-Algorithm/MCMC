@@ -88,23 +88,6 @@ int jrandomized(int current) {
     } while (transitionMatrix[current][j] == 0);
     return j;
 }
-int irandomized(int current) {
-    int i;
-    do {
-        srand(time(0));
-        i = rand() % msize;
-    } while (transitionMatrix[i][current] == 0);
-    return i;
-}
-
-int jrandomized(int current) {
-    int j;
-    do {
-        srand(time(0));
-        j = rand() % msize;
-    } while (transitionMatrix[current][j] == 0);
-    return j;
-}
 
 void randomizer(int &currenti,int &currentj) {
     srand(time(0));
