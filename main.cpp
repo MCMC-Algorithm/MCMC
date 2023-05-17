@@ -62,10 +62,10 @@ void initialize(int msize)
                 temp[i][c] = res;
             }
             if (d >= 0)
-            if (d >= 0)
-            {
-                temp[i][d] = res;
-            }
+                if (d >= 0)
+                {
+                    temp[i][d] = res;
+                }
             newMatrix.push_back(temp);
         }
     }
@@ -89,26 +89,26 @@ vector<int> pos(int num)
     return pos;
 }
 
-int stateRandom(int state) {
-    srand(time(0));
-    int temp = rand() % msize;
-    int currenti = pos(temp)[0];
-    int currentj = pos(temp)[1];
-    if (newMatrix[state][currenti][currentj] != 0)
-        return temp;
-    return stateRandom(state);
-}
-
-int irandomized(int state, int initial_j)
-{
-    int temp = -1;
-    
-}
-
-int jrandomized(int state , int initial_i)
-{
-    
-}
+//int stateRandom(int state) {
+//    srand(time(0));
+//    int temp = rand() % msize;
+//    int currenti = pos(temp)[0];
+//    int currentj = pos(temp)[1];
+//    if (newMatrix[state][currenti][currentj] != 0)
+//        return temp;
+//    return stateRandom(state);
+//}
+//
+//int irandomized(int state, int initial_j)
+//{
+//    int temp = -1;
+//
+//}
+//
+//int jrandomized(int state, int initial_i)
+//{
+//
+//}
 
 //void randomizer(int& currenti, int& currentj)
 //{
@@ -192,7 +192,7 @@ int main()
     cin >> msize;
     cout << "Enter the initial state: ";
     cin >> initialState;
-   cout << "Enter the number of hours: ";
+    cout << "Enter the number of hours: ";
     cin >> hours;
     initialize(msize);
     //display();
@@ -207,13 +207,25 @@ int main()
             cout << endl;
         }
     }
-    int currenti = pos(initialState)[0];
-    int currentj = pos(initialState)[1];
-    cout << irandomized(initialState, currentj);
-    cout << endl << jrandomized(initialState, currenti);
-  /*
-  randomwalk(currenti, currentj);
-    fProb();
-    rprob(); */
+    random_device rd;
+    mt19937 gen(rd());
+    uniform_int_distribution<> rowDist(0, msize - 1);
+    uniform_int_distribution<> colDist(0, msize - 1);
+    int randomRow, randomCol;
+
+    do {
+         randomRow = rowDist(gen);
+         randomCol = colDist(gen);
+    } while (newMatrix[initialState][randomRow][randomCol]==0);
+    cout << "Random indices: (" << randomRow << ", " << randomCol << ")" << endl;
+
+    /* int currenti = pos(initialState)[0];
+     int currentj = pos(initialState)[1];
+     cout << irandomized(initialState, currentj);
+     cout << endl << jrandomized(initialState, currenti);*/
+     /*
+     randomwalk(currenti, currentj);
+       fProb();
+       rprob(); */
     return 0;
 }
