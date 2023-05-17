@@ -4,13 +4,13 @@
 #include <ctime>
 using namespace std;
 
+int msize;
 int initialState;
 vector<vector<vector<float>>> newMatrix;
 vector<float> randProb(0);
-vector<int> counter(0);
+vector<int> counter;
 vector<vector<vector<float>>> probabilityMatrix;
 int hours;
-int msize;
 
 
 void initialize(int msize)
@@ -94,24 +94,27 @@ int convert(int i, int j)
     return i * msize + j;
 }
 
-void randomwalk(int& currenti, int& currentj)
+void randomwalk()
 {
-
+    counter.assign(msize * msize, 0);
+    int randomState = initialState;
+    cout << "Start at " << randomState;
     random_device rd;
     mt19937 gen(rd());
     uniform_int_distribution<> rowDist(0, msize - 1);
     uniform_int_distribution<> colDist(0, msize - 1);
-    int randomRow, randomCol;
+    int randomi, randomj,temp;
 
-    do {
-        randomRow = rowDist(gen);
-        randomCol = colDist(gen);
-    } while (newMatrix[initialState][randomRow][randomCol] == 0);
-    cout << "Random indices: (" << randomRow << ", " << randomCol << ")" << endl;
-
-
-
-
+    for (unsigned short i = 0; i < hours; i++) {
+        do {
+            temp = randomState;
+            randomi = rowDist(gen);
+            randomj = colDist(gen);
+        } while (newMatrix[temp][randomi][randomj] == 0);
+        randomState = convert(randomi, randomj);
+        cout << "Random state: "<< randomState <<" with (" << randomi << ", " << randomj << ")" << endl;
+        counter[randomState]++;
+    }
 
 }
 
@@ -124,17 +127,20 @@ void randomwalk(int& currenti, int& currentj)
 //    }
 //}
 //
-//void display()
-//{
-//    for (int i = 0; i < msize; i++)
-//    {
-//        for (int j = 0; j < msize; j++)
-//        {
-//            cout << transitionMatrix[i][j] << " ";
-//        }
-//        cout << endl;
-//    }
-//}
+void display()
+{
+    for (unsigned short k = 0; k < newMatrix.size(); k++) {
+        cout << k << ")\n";
+        for (int i = 0; i < msize; i++)
+        {
+            for (int j = 0; j < msize; j++)
+            {
+                cout << newMatrix[k][i][j] << " ";
+            }
+            cout << endl;
+        }
+    }
+}
 //
 //void rprob() {
 //    for (int i = 0; i < msize; i++) {
@@ -165,24 +171,11 @@ int main()
     cout << "Enter the number of hours: ";
     cin >> hours;
     initialize(msize);
-    //display();
-    for (unsigned short k = 0; k < newMatrix.size(); k++) {
-        cout << k << ")\n";
-        for (int i = 0; i < msize; i++)
-        {
-            for (int j = 0; j < msize; j++)
-            {
-                cout << newMatrix[k][i][j] << " ";
-            }
-            cout << endl;
-        }
-    }
+    display();
 
 
-    /* int currenti = pos(initialState)[0];
-     int currentj = pos(initialState)[1];
-     /*
-       fProb();
-       rprob(); */
+    randomwalk();
+       //fProb();
+       //rprob();
     return 0;
 }
