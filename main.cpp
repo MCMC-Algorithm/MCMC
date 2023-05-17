@@ -165,9 +165,12 @@ int main()
     cin >> initialState;
     if(initialState>(msize*msize)-1|| initialState<0){ cerr<<"ERROR"<<endl;}
     }while(initialState>(msize*msize)-1|| initialState<0);
-    
+     do
+    {
     cout << "Enter the number of hours: ";
     cin >> hours;
+    if(hours<0) {cerr<<"ERROR"<<endl;}
+    }while(hours<0);
     initialize(msize);
     //display();
     randomwalk();
