@@ -2,6 +2,7 @@
 #include <random>
 #include <vector>
 #include <ctime>
+#include <iomanip>
 using namespace std;
 
 int msize;
@@ -9,7 +10,7 @@ int initialState;
 vector<vector<vector<float>>> newMatrix;
 vector<float> randProb(0);
 vector<int> counter;
-vector<vector<vector<float>>> probabilityMatrix;
+vector<vector<vector<vector<float>>>> probabilityMatrix;
 int hours;
 
 
@@ -98,7 +99,7 @@ void randomwalk()
 {
     counter.assign(msize * msize, 0);
     int randomState = initialState;
-    cout << "Start at " << randomState;
+    cout << "Start at " << randomState<<endl;
     random_device rd;
     mt19937 gen(rd());
     uniform_int_distribution<> rowDist(0, msize - 1);
@@ -106,15 +107,17 @@ void randomwalk()
     int randomi, randomj, temp;
 
     for (unsigned short i = 0; i < hours; i++) {
+        cout << "\nHour :  " << i + 1;
         do {
             temp = randomState;
             randomi = rowDist(gen);
             randomj = colDist(gen);
         } while (newMatrix[temp][randomi][randomj] == 0);
         randomState = convert(randomi, randomj);
-        cout << "Random state: " << randomState << " with (" << randomi << ", " << randomj << ")" << endl;
+        cout << "\nRandom state : " << randomState << " with (" << randomi << ", " << randomj << ")" << endl;
         counter[randomState]++;
     }
+    cout << endl << endl;
 
 }
 
@@ -141,33 +144,12 @@ void fProb()
     for (int i = 0; i < (msize * msize); i++)
     {
         randProb[i] = (float)counter[i] / hours;
-        cout << randProb[i] << " ";
+        cout << left << setw(20) << randProb[i] ;
         if ((i + 1) % msize == 0)
             cout << endl;
     }
 }
 
-
-//
-//void rprob() {
-//    for (int i = 0; i < msize; i++) {
-//        for (int j = 0; j < msize; j++) {
-//            probabilityMatrix[i][j][0] = transitionMatrix[i][j];
-//        }
-//    }
-//    if (hours > 1) {
-//        for (int h = 1; h < hours; h++) {
-//            for (int i = 0; i < msize; i++) {
-//                for (int j = 0; j < msize; j++) {
-//                    probabilityMatrix[i][j][h] = 0;
-//                    for (int k = 0; k < 9; k++) {
-//                        probabilityMatrix[i][j][h] += probabilityMatrix[i][k][h - 1] * transitionMatrix[k][j];
-//                    }
-//                }
-//            }
-//        }
-//    }
-//}
 
 int main()
 {
@@ -178,11 +160,8 @@ int main()
     cout << "Enter the number of hours: ";
     cin >> hours;
     initialize(msize);
-    display();
-
-
+    //display();
     randomwalk();
     fProb();
-    //rprob();
     return 0;
 }
