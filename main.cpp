@@ -103,7 +103,7 @@ void randomwalk()
     mt19937 gen(rd());
     uniform_int_distribution<> rowDist(0, msize - 1);
     uniform_int_distribution<> colDist(0, msize - 1);
-    int randomi, randomj,temp;
+    int randomi, randomj, temp;
 
     for (unsigned short i = 0; i < hours; i++) {
         do {
@@ -112,21 +112,13 @@ void randomwalk()
             randomj = colDist(gen);
         } while (newMatrix[temp][randomi][randomj] == 0);
         randomState = convert(randomi, randomj);
-        cout << "Random state: "<< randomState <<" with (" << randomi << ", " << randomj << ")" << endl;
+        cout << "Random state: " << randomState << " with (" << randomi << ", " << randomj << ")" << endl;
         counter[randomState]++;
     }
 
 }
 
-//void fProb()
-//{
-//    for (int i = 0; i < (msize * msize); i++)
-//    {
-//        randProb[i] = counter[i] / hours;
-//        cout << randProb[i] << endl;
-//    }
-//}
-//
+
 void display()
 {
     for (unsigned short k = 0; k < newMatrix.size(); k++) {
@@ -135,12 +127,27 @@ void display()
         {
             for (int j = 0; j < msize; j++)
             {
-                cout << newMatrix[k][i][j] << " ";
+                cout << newMatrix[k][i][j] << "    ";
             }
             cout << endl;
         }
     }
 }
+
+
+void fProb()
+{
+    randProb.assign((msize * msize), 0);
+    for (int i = 0; i < (msize * msize); i++)
+    {
+        randProb[i] = (float)counter[i] / hours;
+        cout << randProb[i] << " ";
+        if ((i + 1) % msize == 0)
+            cout << endl;
+    }
+}
+
+
 //
 //void rprob() {
 //    for (int i = 0; i < msize; i++) {
@@ -175,7 +182,7 @@ int main()
 
 
     randomwalk();
-       //fProb();
-       //rprob();
+    fProb();
+    //rprob();
     return 0;
 }
