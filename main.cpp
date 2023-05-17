@@ -154,9 +154,18 @@ void fProb()
 int main()
 {
     cout << "Enter the size of the matrix: ";
+    do{
     cin >> msize;
+    if(msize<0){ cerr<<"ERROR"<<endl;}
+    }while(msize<0);
+
     cout << "Enter the initial state: ";
+   do
+    {
     cin >> initialState;
+    if(initialState>(msize*msize)-1|| initialState<0){ cerr<<"ERROR"<<endl;}
+    }while(initialState>(msize*msize)-1|| initialState<0);
+    
     cout << "Enter the number of hours: ";
     cin >> hours;
     initialize(msize);
