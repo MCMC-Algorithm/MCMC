@@ -7,10 +7,9 @@ using namespace std;
 
 int msize;
 int initialState;
-vector<vector<vector<float>>> newMatrix;
+vector<vector<vector<float>>> transitionMatrix;
 vector<float> randProb(0);
 vector<int> counter;
-vector<vector<vector<vector<float>>>> probabilityMatrix;
 int hours;
 
 
@@ -67,7 +66,7 @@ void initialize(int msize)
                 {
                     temp[i][d] = res;
                 }
-            newMatrix.push_back(temp);
+            transitionMatrix.push_back(temp);
         }
     }
 }
@@ -112,7 +111,7 @@ void randomwalk()
             temp = randomState;
             randomi = rowDist(gen);
             randomj = colDist(gen);
-        } while (newMatrix[temp][randomi][randomj] == 0);
+        } while (transitionMatrix[temp][randomi][randomj] == 0);
         randomState = convert(randomi, randomj);
         cout << "\nRandom state : " << randomState << " with (" << randomi << ", " << randomj << ")" << endl;
         counter[randomState]++;
@@ -124,13 +123,13 @@ void randomwalk()
 
 void display()
 {
-    for (unsigned short k = 0; k < newMatrix.size(); k++) {
+    for (unsigned short k = 0; k < transitionMatrix.size(); k++) {
         cout << k << ")\n";
         for (int i = 0; i < msize; i++)
         {
             for (int j = 0; j < msize; j++)
             {
-                cout << newMatrix[k][i][j] << "    ";
+                cout << transitionMatrix[k][i][j] << "    ";
             }
             cout << endl;
         }
