@@ -5,10 +5,11 @@
 using namespace std;
 
 int initialState;
-int edgeProbability;
-vector<vector<int>> transitionMatrix(0);
-vector<int> counter(0), randProb(0);
-vector<vector<vector<int>>> probabilityMatrix;
+vector<vector<float>> transitionMatrix(0);
+vector<vector<vector<float>>> newMatrix;
+vector<float> randProb(0);
+vector<int> counter(0);
+vector<vector<vector<float>>> probabilityMatrix;
 int hours;
 int msize;
 
@@ -19,12 +20,13 @@ void initialize(int msize)
     {
         for (unsigned short j = 0; j < msize; j++)
         {
+            transitionMatrix.assign(msize, vector<float>(msize, 0));
             int a, b, c, d, count = 1;
             a = i + 1;
             b = i - 1;
             c = j + 1;
             d = j - 1;
-            if (a < msize - 1)
+            if (a <= msize - 1)
             {
                 transitionMatrix[a][j] = 1;
                 count++;
@@ -34,33 +36,35 @@ void initialize(int msize)
                 transitionMatrix[b][j] = 1;
                 count++;
             }
-            if (c < msize - 1)
+            if (c <= msize - 1)
             {
                 transitionMatrix[i][c] = 1;
                 count++;
             }
-            if (d < 0)
+            if (d >= 0)
             {
                 transitionMatrix[i][d] = 1;
                 count++;
             }
-            transitionMatrix[i][j] = 1 / count;
-            if (a < msize - 1)
+            double res = 1.0 / count;
+            transitionMatrix[i][j] = res;
+            if (a <= msize - 1)
             {
-                transitionMatrix[a][j] = 1 / count;
+                transitionMatrix[a][j] = res;
             }
             if (b >= 0)
             {
-                transitionMatrix[b][j] = 1 / count;
+                transitionMatrix[b][j] = res;
             }
-            if (c < msize - 1)
+            if (c <= msize - 1)
             {
-                transitionMatrix[i][c] = 1 / count;
+                transitionMatrix[i][c] = res;
             }
-            if (d < 0)
+            if (d >= 0)
             {
-                transitionMatrix[i][d] = 1 / count;
+                transitionMatrix[i][d] = res;
             }
+            newMatrix.push_back(transitionMatrix);
         }
     }
 }
@@ -77,10 +81,10 @@ vector<int> pos(int num)
         }
         num--;
     }
-    vector<int> x;
-    x[0] = i;
-    x[1] = j;
-    return x;
+    vector<int> pos;
+    pos.push_back(i);
+    pos.push_back(j);
+    return pos;
 }
 
 int irandomized(int current)
@@ -105,7 +109,7 @@ int jrandomized(int current)
     return j;
 }
 
-void randomizer(int &currenti, int &currentj)
+void randomizer(int& currenti, int& currentj)
 {
     srand(time(0));
     int x = rand() % 3;
@@ -125,7 +129,7 @@ int convert(int i, int j)
     return i * msize + j + 1;
 }
 
-void randomwalk(int &currenti, int &currentj)
+void randomwalk(int& currenti, int& currentj)
 {
     int num = -1;
     for (int i = 0; i < hours; i++)
@@ -160,23 +164,24 @@ void display()
     }
 }
 
-void rprob(int hours){
-    for(int i = 0; i < msize; i++){
-        for(int j=0;j<msize;j++){
-            probabilityMatrix[i][j][0]=transitionMatrix[i][j];
+void rprob() {
+    for (int i = 0; i < msize; i++) {
+        for (int j = 0; j < msize; j++) {
+            probabilityMatrix[i][j][0] = transitionMatrix[i][j];
         }
     }
-    if(hours>1){
-        for(int h=1;h<hours;h++){
-            for(int i=0;i<msize;i++){
-                for(int j=0;j<msize;j++){
-                    probabilityMatrix[i][j][h]=0;
-                    for(int k=0;k<9;k++){
-                        probabilityMatrix[i][j][h]+=probabilityMatrix[i][k][h-1]*transitionMatrix[k][j];
+    if (hours > 1) {
+        for (int h = 1; h < hours; h++) {
+            for (int i = 0; i < msize; i++) {
+                for (int j = 0; j < msize; j++) {
+                    probabilityMatrix[i][j][h] = 0;
+                    for (int k = 0; k < 9; k++) {
+                        probabilityMatrix[i][j][h] += probabilityMatrix[i][k][h - 1] * transitionMatrix[k][j];
                     }
                 }
             }
         }
+    }
 }
 
 int main()
@@ -185,21 +190,26 @@ int main()
     cin >> msize;
     cout << "Enter the initial state: ";
     cin >> initialState;
-    cout << "Enter the probability of an edge: ";
-    cin >> edgeProbability;
-    cout << "Enter the number of hours: ";
+   cout << "Enter the number of hours: ";
     cin >> hours;
-    transitionMatrix.resize(msize);
-    for (int i = 0; i < msize; i++)
-    {
-        transitionMatrix[i].resize(msize);
-    }
     initialize(msize);
-    display();
+   // display();
+    for (unsigned short k = 0; k < newMatrix.size(); k++) {
+        cout << k << ")\n";
+        for (int i = 0; i < msize; i++)
+        {
+            for (int j = 0; j < msize; j++)
+            {
+                cout << newMatrix[k][i][j] << " ";
+            }
+            cout << endl;
+        }
+    }
     int currenti = pos(initialState)[0];
     int currentj = pos(initialState)[1];
     randomwalk(currenti, currentj);
+  /*
     fProb();
-    rprob(hours);
+    rprob();*/
     return 0;
 }
