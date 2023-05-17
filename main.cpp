@@ -89,62 +89,32 @@ vector<int> pos(int num)
     return pos;
 }
 
-//int stateRandom(int state) {
-//    srand(time(0));
-//    int temp = rand() % msize;
-//    int currenti = pos(temp)[0];
-//    int currentj = pos(temp)[1];
-//    if (newMatrix[state][currenti][currentj] != 0)
-//        return temp;
-//    return stateRandom(state);
-//}
-//
-//int irandomized(int state, int initial_j)
-//{
-//    int temp = -1;
-//
-//}
-//
-//int jrandomized(int state, int initial_i)
-//{
-//
-//}
-
-//void randomizer(int& currenti, int& currentj)
-//{
-//    srand(time(0));
-//    int x = rand() % 3;
-//    if (x == 0)
-//    {
-//        currenti = irandomized(currenti);
-//    }
-//    else if (x == 1)
-//    {
-//        currentj = jrandomized(currentj);
-//    }
-//    cout << "\ni: " << currenti << " j: " << currentj << endl;
-//}
-
 int convert(int i, int j)
 {
     return i * msize + j;
 }
 
-//void randomwalk(int& currenti, int& currentj)
-//{
-//    int st_num = -1;
-//    for (int i = 0; i < hours; i++)
-//    {
-//        int st_num = convert(currenti, currentj);
-//        cout << "\nfrom state " << st_num << " to state ";
-//        randomizer(currenti, currentj);
-//        st_num = convert(currenti, currentj);
-//        newMatrix[st_num][currenti][currentj];
-//        cout << st_num << endl;
-//        counter[st_num]++;
-//    }
-//}
-//
+void randomwalk(int& currenti, int& currentj)
+{
+
+    random_device rd;
+    mt19937 gen(rd());
+    uniform_int_distribution<> rowDist(0, msize - 1);
+    uniform_int_distribution<> colDist(0, msize - 1);
+    int randomRow, randomCol;
+
+    do {
+        randomRow = rowDist(gen);
+        randomCol = colDist(gen);
+    } while (newMatrix[initialState][randomRow][randomCol] == 0);
+    cout << "Random indices: (" << randomRow << ", " << randomCol << ")" << endl;
+
+
+
+
+
+}
+
 //void fProb()
 //{
 //    for (int i = 0; i < (msize * msize); i++)
@@ -207,24 +177,11 @@ int main()
             cout << endl;
         }
     }
-    random_device rd;
-    mt19937 gen(rd());
-    uniform_int_distribution<> rowDist(0, msize - 1);
-    uniform_int_distribution<> colDist(0, msize - 1);
-    int randomRow, randomCol;
 
-    do {
-         randomRow = rowDist(gen);
-         randomCol = colDist(gen);
-    } while (newMatrix[initialState][randomRow][randomCol]==0);
-    cout << "Random indices: (" << randomRow << ", " << randomCol << ")" << endl;
 
     /* int currenti = pos(initialState)[0];
      int currentj = pos(initialState)[1];
-     cout << irandomized(initialState, currentj);
-     cout << endl << jrandomized(initialState, currenti);*/
      /*
-     randomwalk(currenti, currentj);
        fProb();
        rprob(); */
     return 0;
