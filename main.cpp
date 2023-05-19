@@ -106,14 +106,14 @@ void randomwalk()
     int randomi, randomj, temp;
 
     for (unsigned short i = 0; i < hours; i++) {
-        cout << "\nHour :  " << i + 1;
+        cout << "\nHour [" << i + 1<<"]";
         do {
             temp = randomState;
             randomi = rowDist(gen);
             randomj = colDist(gen);
         } while (transitionMatrix[temp][randomi][randomj] == 0);
         randomState = convert(randomi, randomj);
-        cout << "\nRandom state : " << randomState << " with (" << randomi << ", " << randomj << ")" << endl;
+        cout << "\nProbable intersection : " << randomState << " with indicies (" << randomi << ", " << randomj << ")" << endl;
         counter[randomState]++;
     }
     cout << endl << endl;
@@ -145,32 +145,35 @@ void fProb()
         randProb[i] = (float)counter[i] / hours;
         cout << left << setw(20) << randProb[i] ;
         if ((i + 1) % msize == 0)
-            cout << endl;
+            cout << endl<<endl;
     }
 }
 
 
 int main()
 {
-    cout << "Enter the size of the matrix: ";
-    do{
-    cin >> msize;
-    if(msize<0){ cerr<<"ERROR"<<endl;}
-    }while(msize<0);
-
-    cout << "Enter the initial state: ";
-   do
-    {
-    cin >> initialState;
-    if(initialState>(msize*msize)-1|| initialState<0){ cerr<<"ERROR"<<endl;}
-    }while(initialState>(msize*msize)-1|| initialState<0);
+    cout << "\n\t\t\t\t\t  ******************************" << "\n\t\t\t\t\t*                                *" << "\n\t\t\t\t\t*              MCMC              *" << "\n\t\t\t\t\t*                                *" << "\n\t\t\t\t\t  ******************************\n\n\n";   
     
-    cout << "Enter the number of hours: ";
-     do
-    {
+    do{
+    cout << "Please specify the number of roads in your neighberhood : "; 
+    cin >> msize;
+    if(msize<2)             
+    cerr << "\n\t\t*** INVALID :: LOGICAL ERROR :: MAP MUST AT LEAST INCLUDE TWO ROADS TO CONTAIN AN INTERSECTION ***\n" << endl; 
+    } while(msize<2);
+
+   do{
+    cout << "\nPlease specify the intersection number for where the roadblock is currently located : ";
+    cin >> initialState;
+    if(initialState>(msize*msize)-1|| initialState<0)
+    cerr << "\n\t\t*** INVALID :: LOGICAL ERROR :: NUMBER OF INTERSECTIONS ENTERED DOES NOT MATCH WITH THE SPECIFIED ROADS ABOVE ***\n" << endl;
+    } while(initialState>(msize*msize)-1|| initialState<0);
+    
+    do{
+    cout << "\nPlease specify the number of hours you believe the roadblock will last for : ";
     cin >> hours;
-    if(hours<0) {cerr<<"ERROR"<<endl;}
-    }while(hours<0);
+    if(hours<1) 
+    cerr << "\n\t\t*** INVALID :: LOGICAL ERROR :: HOURS CAN NOT BE LESS THAN ONE***\n" << endl;
+    } while(hours<1);
     initialize(msize);
     //display();
     randomwalk();
